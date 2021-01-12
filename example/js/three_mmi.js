@@ -23,8 +23,7 @@
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	SOFTWARE.
 	
-	You can find an example project in the github repository (https://github.com/danielblagy/three_mmi) under folder
-	named 'example'.
+	An example project (*github link*)
 	
 	USAGE:
 	// pass threejs scene and camera

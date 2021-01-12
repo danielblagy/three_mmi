@@ -1,4 +1,7 @@
-## USAGE:
+## MouseMeshInteraction
+is a utility class that lets you to easily set up mouse event handlers for threejs meshes (THREE.Mesh objects).
+
+## Usage:
 ```
 // pass threejs scene and camera
 const mmi = new MouseMeshInteraction(scene, camera);
@@ -27,14 +30,14 @@ function animate() {
 animate();
 ```
 
-## QUICKSTART TEMPLATE:
+## Quickstart Template:
 For a project with the following structure:
-index.html
-js/three.js
-js/three_mmi.js
+- index.html
+- js/three.js
+- js/three_mmi.js
 
-*index.html*
 ```
+/* index.html */
 <!DOCTYPE html>
 <html>
 	<head>
