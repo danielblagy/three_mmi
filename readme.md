@@ -1,6 +1,9 @@
 ## MouseMeshInteraction
 is a utility class that lets you to easily set up mouse event handlers for threejs meshes (THREE.Mesh objects).
 
+##  
+[Making the example (Youtube video)](https://www.youtube.com/watch?v=hSBYYDx-KL0)
+
 ## Usage:
 ```
 // pass threejs scene and camera
