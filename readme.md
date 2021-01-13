@@ -4,6 +4,9 @@ is a utility class that lets you to easily set up mouse event handlers for three
 ##  
 [Making the example (Youtube video)](https://www.youtube.com/watch?v=hSBYYDx-KL0)
 
+##  
+[File System Visualizer that uses three_mmi (Github repository)](https://github.com/danielblagy/wm3dfsv)
+
 ## Usage:
 ```
 // pass threejs scene and camera
