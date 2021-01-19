@@ -26,6 +26,9 @@
 	You can find an example project in the github repository (https://github.com/danielblagy/three_mmi) under folder
 	named 'example'.
 	
+	UPDATES:
+	1/19/2021: added support for the following even types: mouseenter, mouseleave, mousedown, mouseup
+	
 	USAGE:
 	// pass threejs scene and camera
 	const mmi = new MouseMeshInteraction(scene, camera);
@@ -36,10 +39,14 @@
 	mesh.name = 'my_interactable_mesh';
 	scene.add(mesh);
 	
-	// there are 3 types of interactions available:
-	//		* 'click' (left mouse button click)
-	//		* 'dblclick' (left mouse button double click)
+	// there are 7 types of interactions available:
+	//		* 'click' 		(left mouse button click)
+	//		* 'dblclick' 	(left mouse button double click)
 	//		* 'contextmenu' (right mouse button click, triggered before opening the context menu)
+	//		* 'mouseenter' 	(mouse cursor is moved onto the element that has the listener attached)
+	//		* 'mouseleave' 	(mouse cursor is moved off the element that has the listener attached)
+	//		* 'mousedown' 	(mouse button is pressed on an element)
+	//		* 'mouseup' 	(mouse button is released over an element)
 	
 	// create a handler for when user clicks on the mesh with name 'my_interactable_mesh'
 	mmi.addHandler('my_interactable_mesh', 'click', function(mesh) {

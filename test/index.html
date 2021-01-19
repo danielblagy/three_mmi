@@ -87,6 +87,10 @@
 				mesh.material.color = orange_color;
 			});
 			
+			mmi.addHandler('new_features_mesh', 'click', function(mesh) {
+				console.log('mouse button is clicked on the mesh!  ', mesh);
+			});
+			
 			function render() {
 				requestAnimationFrame(render);
 				// update the mmi

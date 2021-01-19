@@ -26,6 +26,10 @@ Supported mouse events:
 * 'click' (left mouse button click)
 * 'dblclick' (left mouse button double click)
 * 'contextmenu' (right mouse button click, triggered before opening the context menu)
+* 'mouseenter' 	(mouse cursor is moved onto the element that has the listener attached)
+* 'mouseleave' 	(mouse cursor is moved off the element that has the listener attached)
+* 'mousedown' 	(mouse button is pressed on an element)
+* 'mouseup' 	(mouse button is released over an element)
 ```js
 // create a handler for when user clicks on a mesh with the name 'my_interactable_mesh'
 mmi.addHandler('my_interactable_mesh', 'click', function(mesh) {
