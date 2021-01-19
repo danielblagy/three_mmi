@@ -148,6 +148,8 @@ class MouseMeshInteraction {
 		
 		// last mesh that the mouse cursor was over
 		this.last_mouseenter_mesh = undefined;
+		// last mesh that the mouse was pressing down
+		this.last_pressed_mesh = undefined;
 		
 		this.handlers = new Map();
 		
@@ -155,11 +157,10 @@ class MouseMeshInteraction {
 		this.handlers.set('dblclick', []);
 		this.handlers.set('contextmenu', []);
 		
-		// not tested, may be broken
 		this.handlers.set('mousedown', []);
+		this.handlers.set('mouseup', []);
 		this.handlers.set('mouseenter', []);
 		this.handlers.set('mouseleave', []);
-		//
 		
 		window.addEventListener('mousemove', this);
 		
@@ -167,11 +168,7 @@ class MouseMeshInteraction {
 		window.addEventListener('dblclick', this);
 		window.addEventListener('contextmenu', this);
 		
-		// not tested, may be broken
 		window.addEventListener('mousedown', this);
-		//window.addEventListener('mouseenter', this);
-		//window.addEventListener('mouseleave', this);
-		//
 	}
 	
 	handleEvent(e) {
@@ -191,11 +188,9 @@ class MouseMeshInteraction {
 	}
 	
 	addHandler(mesh_name, event_type, handler_function) {
-		console.log(mesh_name, '  ', event_type, '  ', handler_function);
 		if (this.handlers.has(event_type)) {
 			this.handlers.get(event_type).push(new MouseMeshInteractionHandler(mesh_name, handler_function));
 		}
-		console.log(this.handlers);
 	}
 	
 	update() {
@@ -232,6 +227,22 @@ class MouseMeshInteraction {
 					}
 				}
 				else {
+					// if mouseup event has occurred
+					if (this.event === 'click' && this.last_pressed_mesh === intersects[0].object) {
+						for (const handler of this.handlers.get('mouseup')) {
+							if (handler.mesh_name === intersects[0].object.name) {
+								handler.handler_function(intersects[0].object);
+								break;
+							}
+						}
+						this.last_pressed_mesh = undefined;
+					}
+					
+					// for mouseup event handler to work
+					if (this.event === 'mousedown') {
+						this.last_pressed_mesh = intersects[0].object;
+					}
+					
 					let handlers_of_event = this.handlers.get(this.event);
 					for (const handler of handlers_of_event) {
 						if (handler.mesh_name === intersects[0].object.name) {
