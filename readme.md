@@ -1,5 +1,5 @@
-## MouseMeshInteraction
-is a utility class that lets you to easily set up mouse event handlers for threejs meshes (THREE.Mesh objects).
+# MouseMeshInteraction
+is a utility class that lets you easily set up mouse event handlers for threejs meshes (THREE.Mesh objects).
 
 ##  
 [Making the example (Youtube video)](https://www.youtube.com/watch?v=hSBYYDx-KL0)
@@ -8,23 +8,33 @@ is a utility class that lets you to easily set up mouse event handlers for three
 [File System Visualizer that uses three_mmi (Github repository)](https://github.com/danielblagy/wm3dfsv)
 
 ## Usage:
-```
+Initialize MouseMeshInteraction object (doesn't have to come before creating mesh objects)
+```js
 // pass threejs scene and camera
 const mmi = new MouseMeshInteraction(scene, camera);
+```
+Create an interactable mesh
+```js
 // create an interactable mesh
 const mesh = new THREE.Mesh(geometry, material);
 // specify a name for the mesh (needed for mmi to work, you can give the same name to multiple meshes)
 mesh.name = 'my_interactable_mesh';
 scene.add(mesh);
-// there are 3 types of interactions available:
-//		* 'click' (left mouse button click)
-//		* 'dblclick' (left mouse button double click)
-//		* 'contextmenu' (right mouse button click, triggered before opening the context menu)
-// create a handler for when user clicks on the mesh with name 'my_interactable_mesh'
+```
+Add a handler of a mouse event for a mesh with a specified name
+Supported mouse events:
+* 'click' (left mouse button click)
+* 'dblclick' (left mouse button double click)
+* 'contextmenu' (right mouse button click, triggered before opening the context menu)
+```js
+// create a handler for when user clicks on a mesh with the name 'my_interactable_mesh'
 mmi.addHandler('my_interactable_mesh', 'click', function(mesh) {
 	console.log('interactable mesh has been clicked!');
 	console.log(mesh);
 });
+```
+Inside of render & update loop, call update function
+```js
 // put mmi.update() inside the graphics update function
 function animate() {
 	requestAnimationFrame( animate );
@@ -35,6 +45,7 @@ function animate() {
 }
 animate();
 ```
+That's it!
 
 ## Quickstart Template:
 For a project with the following structure:
