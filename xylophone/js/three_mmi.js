@@ -28,10 +28,6 @@
 	
 	UPDATES:
 	1/19/2021: added support for the following even types: mouseenter, mouseleave, mousedown, mouseup
-	1/20/2021: fixed bug: mouseleave event wouldn't trigger if there was mouseenter for
-							another mesh with the same name property
-								(mistake in if condition, due to the utility using the mesh names)
-			   added xylophone simulation example project
 	
 	USAGE:
 	// pass threejs scene and camera

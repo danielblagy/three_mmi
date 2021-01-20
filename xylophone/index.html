@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Xylophone Simulation</title>
+	</head>
+	<body>
+		<script src="js/three.js"></script>
+		<script src="js/three_mmi.js"></script>
+		<script>
+			const scene = new THREE.Scene();
+			
+			const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+			camera.position.set(0, 30, 20);
+			camera.rotation.set(-Math.PI / 3, 0, 0);
+					
+			const renderer = new THREE.WebGLRenderer({antialias : true});
+			renderer.setSize(window.innerWidth, window.innerHeight);
+			renderer.setClearColor(0x88cee3, 1.0);
+			document.body.appendChild(renderer.domElement);
+			
+			const spotLight = new THREE.SpotLight( 0xffffff );
+			spotLight.position.set( 100, 1000, 600 );
+			scene.add(spotLight);
+			
+			const pink_color = new THREE.Color(0xddbbbb);
+			const yellow_color = new THREE.Color(0xeeeeaa);
+			
+			//const geometry = new THREE.BoxGeometry(5, 5, 10);
+			
+			let mesh_note = new Map();
+			
+			const gap = window.innerWidth / 200;
+			let x = -1 * gap * 3.5;
+			for (var i = 1; i <= 8; i++) {
+				const geometry = new THREE.BoxGeometry(5, 5, 20 - i);
+				const material = new THREE.MeshLambertMaterial( { color: pink_color } );
+				let mesh = new THREE.Mesh(geometry, material);
+				mesh.name = 'bar';
+				mesh.position.set(x, 0, 0);
+				scene.add(mesh);
+				x += gap;
+				
+				mesh_note.set(mesh.id, 'notes/note_' + i.toString(10) + '.ogg');
+			}
+			console.log(mesh_note);
+			
+			let active_mesh = undefined;
+			let step = 18;
+			
+			const mmi = new MouseMeshInteraction(scene, camera);
+			
+			mmi.addHandler('bar', 'mousedown', function(mesh) {
+				let audio = new Audio(mesh_note.get(mesh.id));
+				audio.play();
+				if (active_mesh !== undefined) {
+					active_mesh.position.y = 0;
+				}
+				active_mesh = mesh;
+			});
+			
+			mmi.addHandler('bar', 'mouseenter', function(mesh) {
+				mesh.material.color = yellow_color;
+			});
+			
+			mmi.addHandler('bar', 'mouseleave', function(mesh) {
+				mesh.material.color = pink_color;
+			});
+			
+			let clock = new THREE.Clock();
+			
+			function render() {
+				requestAnimationFrame(render);
+				mmi.update();
+				
+				let delta = clock.getDelta();
+				
+				// update logic
+				if (active_mesh !== undefined) {
+					active_mesh.position.y += step * delta;
+					
+					if (active_mesh.position.y >= 2) {
+						reached_half = false;
+						step *= -1;
+					}
+					else if (active_mesh.position.y < 0) {
+						active_mesh.position.y = 0;
+						active_mesh = undefined;
+						step *= -1;
+					}
+				}
+				
+				renderer.render(scene, camera);
+			}
+			
+			render();
+		</script>
+	</body>
+</html>
