@@ -1,6 +1,9 @@
 # MouseMeshInteraction
 is a utility class that lets you easily set up mouse event handlers for threejs meshes (THREE.Mesh objects).
 
+##
+[Making Xylophone Simulation (Youtube video)](https://youtu.be/kAAgb1qYMbA)
+
 ##  
 [Making the example (Youtube video)](https://www.youtube.com/watch?v=hSBYYDx-KL0)
 
