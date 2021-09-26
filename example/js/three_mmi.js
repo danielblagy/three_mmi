@@ -23,7 +23,17 @@
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	SOFTWARE.
 	
-	An example project (*github link*)
+	You can find an example project in the github repository (https://github.com/danielblagy/three_mmi) under folder
+	named 'example'.
+	
+	UPDATES:
+	1/19/2021: added support for the following even types: mouseenter, mouseleave, mousedown, mouseup
+	1/20/2021: fixed bug: mouseleave event wouldn't trigger if there was mouseenter for
+							another mesh with the same name property
+								(mistake in if condition, due to the utility using the mesh names)
+			   added xylophone simulation example project
+	9/25/2021: changed local variable 'event' to 'e' in function handleEvent(e), as is logically proper,
+				and 'event' being deprecated
 	
 	USAGE:
 	// pass threejs scene and camera
@@ -35,10 +45,14 @@
 	mesh.name = 'my_interactable_mesh';
 	scene.add(mesh);
 	
-	// there are 3 types of interactions available:
-	//		* 'click' (left mouse button click)
-	//		* 'dblclick' (left mouse button double click)
+	// there are 7 types of interactions available:
+	//		* 'click' 		(left mouse button click)
+	//		* 'dblclick' 	(left mouse button double click)
 	//		* 'contextmenu' (right mouse button click, triggered before opening the context menu)
+	//		* 'mouseenter' 	(mouse cursor is moved onto the element that has the listener attached)
+	//		* 'mouseleave' 	(mouse cursor is moved off the element that has the listener attached)
+	//		* 'mousedown' 	(mouse button is pressed on an element)
+	//		* 'mouseup' 	(mouse button is released over an element)
 	
 	// create a handler for when user clicks on the mesh with name 'my_interactable_mesh'
 	mmi.addHandler('my_interactable_mesh', 'click', function(mesh) {
@@ -145,24 +159,38 @@ class MouseMeshInteraction {
 		this.updated = false;
 		this.event = '';
 		
+		// last mesh that the mouse cursor was over
+		this.last_mouseenter_mesh = undefined;
+		// last mesh that the mouse was pressing down
+		this.last_pressed_mesh = undefined;
+		
 		this.handlers = new Map();
 		
 		this.handlers.set('click', []);
 		this.handlers.set('dblclick', []);
 		this.handlers.set('contextmenu', []);
 		
+		this.handlers.set('mousedown', []);
+		this.handlers.set('mouseup', []);
+		this.handlers.set('mouseenter', []);
+		this.handlers.set('mouseleave', []);
+		
 		window.addEventListener('mousemove', this);
 		
 		window.addEventListener('click', this);
 		window.addEventListener('dblclick', this);
 		window.addEventListener('contextmenu', this);
+		
+		window.addEventListener('mousedown', this);
 	}
 	
 	handleEvent(e) {
 		switch(e.type) {
 			case "mousemove": {
-				this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-				this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+				this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+				this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+				this.updated = true;
+				this.event = 'motion';
 			}
 			break;
 			default: {
@@ -187,10 +215,70 @@ class MouseMeshInteraction {
 			const intersects = this.raycaster.intersectObjects(this.scene.children);
 			
 			if (intersects.length > 0) {
-				let handlers_of_event = this.handlers.get(this.event);
-				for (const handler of handlers_of_event) {
-					if (handler.mesh_name === intersects[0].object.name) {
-						handler.handler_function(intersects[0].object);
+				// special test for events: 'mouseenter', 'mouseleave'
+				if (this.event === 'motion') {
+					let mouseenter_handlers = this.handlers.get('mouseenter');
+					let mouseleave_handlers = this.handlers.get('mouseleave');
+					
+					if (mouseleave_handlers.length > 0) {
+						for (const handler of mouseleave_handlers) {
+							// if mesh was entered by mouse previously, but not anymore, that means it has been mouseleave'd
+							if (
+								this.last_mouseenter_mesh !== undefined
+								&& intersects[0].object !== this.last_mouseenter_mesh
+								&& handler.mesh_name === this.last_mouseenter_mesh.name
+							) {
+								handler.handler_function(this.last_mouseenter_mesh);
+								break;
+							}
+						}
+					}
+					
+					if (mouseenter_handlers.length > 0) {
+						for (const handler of mouseenter_handlers) {
+							if (handler.mesh_name === intersects[0].object.name && intersects[0].object !== this.last_mouseenter_mesh) {
+								this.last_mouseenter_mesh = intersects[0].object;
+								handler.handler_function(intersects[0].object);
+								break;
+							}
+						}
+					}
+				}
+				else {
+					// if mouseup event has occurred
+					if (this.event === 'click' && this.last_pressed_mesh === intersects[0].object) {
+						for (const handler of this.handlers.get('mouseup')) {
+							if (handler.mesh_name === intersects[0].object.name) {
+								handler.handler_function(intersects[0].object);
+								break;
+							}
+						}
+						this.last_pressed_mesh = undefined;
+					}
+					
+					// for mouseup event handler to work
+					if (this.event === 'mousedown') {
+						this.last_pressed_mesh = intersects[0].object;
+					}
+					
+					let handlers_of_event = this.handlers.get(this.event);
+					for (const handler of handlers_of_event) {
+						if (handler.mesh_name === intersects[0].object.name) {
+							handler.handler_function(intersects[0].object);
+							break;
+						}
+					}
+				}
+			}
+			// if mouse doesn't intersect any meshes
+			else if (this.event === 'motion') {
+				// special test for 'mouseleave' event
+				// 			(since it may be triggered when cursor doesn't intersect with any meshes)
+				for (const handler of this.handlers.get('mouseleave')) {
+					// if mesh was entered by mouse previously, but not anymore, that means it has been mouseleave'd
+					if (this.last_mouseenter_mesh !== undefined && handler.mesh_name === this.last_mouseenter_mesh.name) {
+						handler.handler_function(this.last_mouseenter_mesh);
+						this.last_mouseenter_mesh = undefined;
 						break;
 					}
 				}

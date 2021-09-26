@@ -28,6 +28,12 @@
 	
 	UPDATES:
 	1/19/2021: added support for the following even types: mouseenter, mouseleave, mousedown, mouseup
+	1/20/2021: fixed bug: mouseleave event wouldn't trigger if there was mouseenter for
+							another mesh with the same name property
+								(mistake in if condition, due to the utility using the mesh names)
+			   added xylophone simulation example project
+	9/25/2021: changed local variable 'event' to 'e' in function handleEvent(e), as is logically proper,
+				and 'event' being deprecated
 	
 	USAGE:
 	// pass threejs scene and camera
@@ -181,8 +187,8 @@ class MouseMeshInteraction {
 	handleEvent(e) {
 		switch(e.type) {
 			case "mousemove": {
-				this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-				this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+				this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+				this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
 				this.updated = true;
 				this.event = 'motion';
 			}
