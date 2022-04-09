@@ -34,6 +34,7 @@
 			   added xylophone simulation example project
 	9/25/2021: changed local variable 'event' to 'e' in function handleEvent(e), as is logically proper,
 				and 'event' being deprecated
+	4/9/2022:  updated license
 	
 	USAGE:
 	// pass threejs scene and camera
