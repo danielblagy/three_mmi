@@ -141,6 +141,8 @@
 	</html>
 */
 
+import * as THREE from 'three'
+
 class MouseMeshInteractionHandler {
 	constructor(mesh_name, handler_function) {
 		this.mesh_name = mesh_name;
@@ -288,3 +290,5 @@ class MouseMeshInteraction {
 		}
 	}
 }
+
+export default MouseMeshInteraction;
