@@ -10,6 +10,30 @@ is a utility class that lets you easily set up mouse event handlers for threejs 
 ##  
 [File System Visualizer that uses three_mmi (Github repository)](https://github.com/danielblagy/wm3dfsv)
 
+## Download:
+
+To download the script, go to [three_mmi.js](three_mmi.js), open in raw view, right click -> Save as... (or Ctrl + S)
+
+The "module" version of the script is at [module/three_mmi.js](module/three_mmi.js)
+
+## Include:
+
+You can include three_mmi as a simple js script in index.html:
+```js
+/* index.html */
+// inside of html body
+<script src="js/three.js"></script>
+// comes after including three.js
+<script src="js/three_mmi.js"></script>
+```
+
+or you can include it as a module, for example:
+```js
+/* script.js */
+import * as THREE from 'three'
+import MouseMeshInteraction from './three_mmi'
+```
+
 ## Usage:
 Initialize MouseMeshInteraction object (doesn't have to come before creating mesh objects)
 ```js
