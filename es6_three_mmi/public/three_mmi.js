@@ -3,7 +3,7 @@
 	
 	MIT License
 
-	Copyright (c) 2021 danielblagy
+	Copyright (c) 2022 danielblagy
 	
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this software and associated documentation files (the "Software"), to deal
@@ -34,6 +34,8 @@
 			   added xylophone simulation example project
 	9/25/2021: changed local variable 'event' to 'e' in function handleEvent(e), as is logically proper,
 				and 'event' being deprecated
+	4/9/2022:  updated license
+	4/20/2022: fixed the grouping bug (when if meshes were in a group, mouse interactions wouldn't be registered by three_mmi)
 	
 	USAGE:
 	// pass threejs scene and camera
@@ -141,8 +143,6 @@
 	</html>
 */
 
-import * as THREE from 'three'
-
 class MouseMeshInteractionHandler {
 	constructor(mesh_name, handler_function) {
 		this.mesh_name = mesh_name;
@@ -214,7 +214,7 @@ class MouseMeshInteraction {
 			this.raycaster.setFromCamera(this.mouse, this.camera);
 			
 			// calculate objects intersecting the picking ray
-			const intersects = this.raycaster.intersectObjects(this.scene.children);
+			const intersects = this.raycaster.intersectObjects(this.scene.children, true);
 			
 			if (intersects.length > 0) {
 				// special test for events: 'mouseenter', 'mouseleave'
@@ -290,5 +290,3 @@ class MouseMeshInteraction {
 		}
 	}
 }
-
-export default MouseMeshInteraction;

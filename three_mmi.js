@@ -35,6 +35,7 @@
 	9/25/2021: changed local variable 'event' to 'e' in function handleEvent(e), as is logically proper,
 				and 'event' being deprecated
 	4/9/2022:  updated license
+	4/20/2022: fixed the grouping bug (when if meshes were in a group, mouse interactions wouldn't be registered by three_mmi)
 	
 	USAGE:
 	// pass threejs scene and camera
@@ -213,7 +214,7 @@ class MouseMeshInteraction {
 			this.raycaster.setFromCamera(this.mouse, this.camera);
 			
 			// calculate objects intersecting the picking ray
-			const intersects = this.raycaster.intersectObjects(this.scene.children);
+			const intersects = this.raycaster.intersectObjects(this.scene.children, true);
 			
 			if (intersects.length > 0) {
 				// special test for events: 'mouseenter', 'mouseleave'
