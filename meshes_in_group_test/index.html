@@ -32,19 +32,19 @@
 			// add a name to the mesh (needed for mmi to work, you can give the same name to multiple meshes)
 			bulb_mesh.name = 'bulb';
 			bulb_mesh.position.set(0, 0, 0);
-			scene.add(bulb_mesh);
+			//scene.add(bulb_mesh);
 			
 			const bulb_material2 = new THREE.MeshBasicMaterial( { color: yellow_color } );
 			var bulb_mesh2 = new THREE.Mesh(bulb_geometry, bulb_material2);
 			bulb_mesh2.name = 'bulb';
 			bulb_mesh2.position.set(-10, 0, 0);
-			scene.add(bulb_mesh2);
+			//scene.add(bulb_mesh2);
 			
 			const bulb_material3 = new THREE.MeshBasicMaterial( { color: red_color } );
 			var bulb_mesh3 = new THREE.Mesh(bulb_geometry, bulb_material3);
 			bulb_mesh3.name = 'red bulb';
 			bulb_mesh3.position.set(10, 0, 0);
-			scene.add(bulb_mesh3);
+			//scene.add(bulb_mesh3);
 			
 			const lamp_geometry = new THREE.CylinderGeometry( 5, 5, 10, 32 ); 
 			const lamp_material = new THREE.MeshBasicMaterial( { color: gray_color } );
@@ -52,7 +52,7 @@
 			var lamp = new THREE.Mesh(lamp_geometry, lamp_material);
 			lamp.name = 'lamp';
 			lamp.position.set(0, -10, 0);
-			scene.add(lamp);
+			//scene.add(lamp);
 			var lamp_is_on = false;
 			
 			
