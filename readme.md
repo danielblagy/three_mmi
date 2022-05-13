@@ -27,6 +27,14 @@ You can include three_mmi as a simple js script in index.html:
 <script src="js/three_mmi.js"></script>
 ```
 
+## npm install
+
+If you want to use three mmi in a nodejs project, you can install the module with npm.
+
+```
+npm i @danielblagy/three-mmi
+```
+
 or you can include it as a module, for example:
 ```js
 /* script.js */
